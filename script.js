@@ -109,3 +109,16 @@
     // You can use Termux's API to run this if needed
   }
 </script>
+<script>
+  function downloadQEMU() {
+    const qemuUrl = "https://sourceforge.net/projects/vectras-vm-android/files/qemu-system-aarch64.zip/download";
+    window.open(qemuUrl, "_blank");
+    document.getElementById("downloadStatus").textContent = "QEMU download started in a new tab.";
+  }
+
+  function downloadDebian() {
+    const debianUrl = "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.0.0-amd64-netinst.iso";
+    window.open(debianUrl, "_blank");
+    document.getElementById("downloadStatus").textContent = "Debian ISO download started in a new tab.";
+  }
+</script>
