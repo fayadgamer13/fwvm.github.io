@@ -1,0 +1,98 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #121212;
+  color: #eee;
+}
+
+header {
+  background: #1f1f1f;
+  padding: 1em;
+  text-align: center;
+}
+
+nav button {
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  background: #3a3a3a;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+main {
+  padding: 2em;
+}
+
+section {
+  margin-bottom: 2em;
+}
+
+.hidden {
+  display: none;
+}
+
+footer {
+  text-align: center;
+  padding: 1em;
+  background: #1f1f1f;
+}
+
+#memoryPreviewBar {
+  height: 10px;
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  margin-top: 5px;
+  transition: width 0.3s ease;
+}
+
+#memoryPreviewBar {
+  height: 10px;
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  margin-top: 5px;
+  transition: width 0.3s ease;
+}
+#terminalPanel {
+  background: #000;
+  color: #0f0;
+  padding: 1em;
+  font-family: monospace;
+}
+
+#terminalOutput {
+  min-height: 100px;
+  white-space: pre-wrap;
+}
+
+#terminalInput {
+  width: 100%;
+  background: #111;
+  color: #0f0;
+  border: none;
+  padding: 0.5em;
+  font-family: monospace;
+}
+button.save-btn, button.load-btn {
+  transition: transform 0.3s ease;
+}
+
+button.save-btn:hover {
+  transform: scale(1.05) rotate(-2deg);
+}
+
+button.load-btn:hover {
+  transform: scale(1.05) rotate(2deg);
+}
+:root {
+  --bg-color: #121212;
+  --text-color: #eee;
+  --accent-color: #0072ff;
+  --font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  transition: background 0.3s ease, color 0.3s ease;
+}

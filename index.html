@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FWVM Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>FWVM Virtual Machine Manager</h1>
+    <nav>
+      <button onclick="createVM()">Create VM</button>
+      <button onclick="importVM()">Import VM (.fwvm / .ova)</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="vm-list">
+      <h2>Your Virtual Machines</h2>
+      <p>No virtual machines found.</p>
+    </section>
+
+    <section id="vm-setup" class="hidden">
+      <h2>Setup New VM</h2>
+      <form>
+        <label>VM Name: <input type="text" /></label>
+        <label>Location: <input type="text" value="Documents/FWVM/Virtual Machine/" /></label>
+        <label>Thumbnail: <input type="file" accept="image/*" /></label>
+        <label>Memory (MB): <input type="range" min="4" max="131072" value="4096" /></label>
+        <label>Processors: <input type="number" min="1" max="64" value="4" /></label>
+        <label>Guest OS:
+          <select>
+            <option>Linux</option>
+            <option>Windows</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Version: <input type="text" /></label>
+        <label>ISO File: <input type="file" accept=".iso" /></label>
+        <button type="submit">Finalize Setup</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://sites.google.com/view/fwsites/fwstore">About FWVM</a> |
+    <a href="https://sites.google.com/view/fwsitesfwvm">Help</a>
+  </footer>
+</body>
+</html>
+<label>
+  Memory (MB):
+  <input type="range" id="memorySlider" min="4" max="131072" value="4096" />
+  <span id="memoryValue">4096 MB</span>
+</label>
+<div id="memoryPreviewBar"></div>
+<script>
+  const slider = document.getElementById('memorySlider');
+  const valueDisplay = document.getElementById('memoryValue');
+  const previewBar = document.getElementById('memoryPreviewBar');
+
+  slider.addEventListener('input', () => {
+    const val = slider.value;
+    valueDisplay.textContent = `${val} MB`;
+    previewBar.style.width = `${(val / 131072) * 100}%`;
+  });
+</script>
+<label>
+  Thumbnail:
+  <input type="file" id="thumbnailInput" accept="image/*" />
+</label>
+<img id="thumbnailPreview" src="" alt="Thumbnail Preview" style="max-width: 200px; display: none;" />
+<h2>Mouse Settings</h2>
+<label>
+  Choose Cursor Image:
+  <input type="file" id="cursorInput" accept=".png,.cur,.svg,.webp" />
+</label>
+<div id="cursorPreviewContainer">
+  <p>Preview:</p>
+  <img id="cursorPreview" src="" alt="Cursor Preview" style="width: 32px; height: 32px; display: none;" />
+</div>
+<script>
+  const cursorInput = document.getElementById('cursorInput');
+  const cursorPreview = document.getElementById('cursorPreview');
+
+  cursorInput.addEventListener('change', () => {
+    const file = cursorInput.files[0];
+    if (file) {
+      cursorPreview.src = URL.createObjectURL(file);
+      cursorPreview.style.display = 'inline-block';
+    }
+  });
+</script>
+<section id="terminalPanel">
+  <h2>FWVM Terminal</h2>
+  <div id="terminalOutput">fwvm@debian:~$</div>
+  <input type="text" id="terminalInput" placeholder="Type a command..." />
+</section>
+<script>
+  const terminalInput = document.getElementById('terminalInput');
+  const terminalOutput = document.getElementById('terminalOutput');
+
+  terminalInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const cmd = terminalInput.value;
+      terminalOutput.textContent += `\n$ ${cmd}\nCommand '${cmd}' not found`;
+      terminalInput.value = '';
+    }
+  });
+</script>
+<h2>Theme Settings</h2>
+<label>
+  <input type="checkbox" id="themeToggle" />
+  Enable Light Mode
+</label>
+
+<label>
+  Font:
+  <select id="fontSelector">
+    <option value="Segoe UI">Segoe UI</option>
+    <option value="Roboto">Roboto</option>
+    <option value="Courier New">Courier New</option>
+    <option value="Monospace">Monospace</option>
+  </select>
+</label>
+<script>
+  const themeToggle = document.getElementById('themeToggle');
+  const fontSelector = document.getElementById('fontSelector');
+
+  themeToggle.addEventListener('change', () => {
+    if (themeToggle.checked) {
+      document.documentElement.style.setProperty('--bg-color', '#ffffff');
+      document.documentElement.style.setProperty('--text-color', '#000000');
+    } else {
+      document.documentElement.style.setProperty('--bg-color', '#121212');
+      document.documentElement.style.setProperty('--text-color', '#eee');
+    }
+  });
+
+  fontSelector.addEventListener('change', () => {
+    const selectedFont = fontSelector.value;
+    document.documentElement.style.setProperty('--font-family', selectedFont);
+  });
+</script>
