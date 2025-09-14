@@ -35,3 +35,46 @@
     document.documentElement.style.setProperty('--font-family', selectedFont);
   });
 </script>
+<script>
+  const memorySlider = document.getElementById('memorySlider');
+  const memoryDisplay = document.getElementById('memoryDisplay');
+  memorySlider.addEventListener('input', () => {
+    memoryDisplay.textContent = `${memorySlider.value} MB`;
+  });
+
+  const thumbInput = document.getElementById('vmThumbnail');
+  const thumbPreview = document.getElementById('thumbPreview');
+  thumbInput.addEventListener('change', () => {
+    const file = thumbInput.files[0];
+    if (file) {
+      thumbPreview.src = URL.createObjectURL(file);
+      thumbPreview.style.display = 'block';
+    }
+  });
+
+  function downloadQEMU() {
+    document.getElementById('downloadStatus').textContent = "Downloading QEMU...";
+    // Simulate download
+    setTimeout(() => {
+      document.getElementById('downloadStatus').textContent = "QEMU downloaded successfully.";
+    }, 2000);
+  }
+
+  function downloadDebian() {
+    document.getElementById('downloadStatus').textContent = "Downloading Debian emulator...";
+    setTimeout(() => {
+      document.getElementById('downloadStatus').textContent = "Debian emulator downloaded.";
+    }, 2000);
+  }
+
+  function finalizeVM() {
+    alert("VM Created! You can now launch it from the dashboard.");
+    // You can add file saving logic here using Termux or AIDE APIs
+  }
+</script>
+<label>
+  Memory (MB):
+  <input type="range" id="memorySlider" min="4" max="131072" value="4096" />
+  <input type="number" id="memoryInput" min="4" max="131072" value="4096" />
+</label>
+<div id="memoryPreviewBar"></div>
