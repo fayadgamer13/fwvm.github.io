@@ -78,3 +78,34 @@
   <input type="number" id="memoryInput" min="4" max="131072" value="4096" />
 </label>
 <div id="memoryPreviewBar"></div>
+<script>
+  function launchQEMU() {
+    const isoFile = document.getElementById('isoSelector').files[0];
+    const diskFile = document.getElementById('diskSelector').files[0];
+    const memory = document.getElementById('launchMemory').value;
+    const cpu = document.getElementById('launchCPU').value;
+
+    if (!isoFile || !diskFile) {
+      alert("Please select both ISO and disk image files.");
+      return;
+    }
+
+    const isoPath = isoFile.name;
+    const diskPath = diskFile.name;
+
+    const qemuCmd = `qemu-system-aarch64 \\
+  -m ${memory} \\
+  -smp ${cpu} \\
+  -cdrom ${isoPath} \\
+  -hda ${diskPath} \\
+  -boot d \\
+  -machine virt \\
+  -cpu cortex-a57 \\
+  -nographic`;
+
+    document.getElementById('cmdPreview').textContent = qemuCmd;
+
+    // Optional: Save command to qemu.cmd or execute via Termux
+    // You can use Termux's API to run this if needed
+  }
+</script>
