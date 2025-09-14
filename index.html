@@ -298,3 +298,172 @@
 
   <div id="downloadStatus"></div>
 </section>
+<section id="startVM">
+  <h2>Start Virtual Machine</h2>
+
+  <label>ISO File:
+    <input type="file" id="startIso" accept=".iso" />
+  </label>
+
+  <label>Disk Image (.qcow2 or .img):
+    <input type="file" id="startDisk" accept=".qcow2,.img" />
+  </label>
+
+  <label>Memory (MB):
+    <input type="number" id="startMemory" value="4096" min="4" max="131072" />
+  </label>
+
+  <label>CPU Cores:
+    <input type="number" id="startCPU" value="4" min="1" max="64" />
+  </label>
+
+  <button onclick="startVM()">Launch VM</button>
+
+  <pre id="vmCommandPreview"></pre>
+</section>
+<section id="startVM">
+  <h2>Start Virtual Machine</h2>
+
+  <label>ISO File:
+    <input type="file" id="startIso" accept=".iso" />
+  </label>
+
+  <label>Disk Image (.qcow2 or .img):
+    <input type="file" id="startDisk" accept=".qcow2,.img" />
+  </label>
+
+  <label>Memory (MB):
+    <input type="number" id="startMemory" value="4096" min="4" max="131072" />
+  </label>
+
+  <label>CPU Cores:
+    <input type="number" id="startCPU" value="4" min="1" max="64" />
+  </label>
+
+  <button onclick="previewVM()">Preview Command</button>
+  <button onclick="runInTermux()">Run in Termux</button>
+
+  <pre id="vmCommandPreview"></pre>
+</section>
+<div id="vmOverlay">
+  <div id="vmMouse" class="vm-control">🖱️</div>
+  <button id="pauseBtn" class="vm-control" onclick="togglePause()">⏸️ Pause</button>
+  <button id="keyboardBtn" class="vm-control" onclick="toggleKeyboard()">⌨️ Keyboard</button>
+</div>
+
+<div id="keyboardPanel">
+  <input type="text" id="keyboardInput" placeholder="Type here..." />
+</div>
+<div id="vmOverlay">
+  <div id="vmMouse" class="vm-control" draggable="true">🖱️</div>
+  <button id="pauseBtn" class="vm-control" onclick="togglePause()">⏸️ Pause</button>
+  <button id="keyboardBtn" class="vm-control" onclick="toggleKeyboard()">⌨️ Keyboard</button>
+</div>
+
+<div id="keyboardPanel">
+  <input type="text" id="keyboardInput" placeholder="Type here..." />
+</div>
+<section id="vmScreen">
+  <h2>Virtual Machine Display</h2>
+
+  <!-- Option 1: VNC or framebuffer output -->
+  <iframe id="vmDisplay" src="" frameborder="0"></iframe>
+
+  <!-- Option 2: Canvas placeholder for future framebuffer -->
+  <!-- <canvas id="vmCanvas" width="800" height="600"></canvas> -->
+</section>
+<section id="vmScreen">
+  <h2>Virtual Machine Display</h2>
+
+  <!-- Live VM output via VNC or framebuffer -->
+  <iframe id="vmDisplay" src="http://localhost:6080/vnc.html?host=localhost&port=5901" frameborder="0"></iframe>
+
+  <!-- VM Control Overlay -->
+  <div id="vmOverlay">
+    <div id="vmMouse" class="vm-control" draggable="true">🖱️</div>
+    <button id="pauseBtn" class="vm-control" onclick="togglePause()">⏸️ Pause</button>
+    <button id="keyboardBtn" class="vm-control" onclick="toggleKeyboard()">⌨️ Keyboard</button>
+  </div>
+
+  <!-- Keyboard Panel -->
+  <div id="keyboardPanel">
+    <input type="text" id="keyboardInput" placeholder="Type here..." />
+  </div>
+</section>
+<iframe id="vmDisplay" src="http://localhost:6080/vnc.html?resize=scale&autoconnect=true" frameborder="0"></iframe>
+<button onclick="toggleFullscreen()" class="vm-control">🖥️ Fullscreen</button>
+<button onclick="captureVM()" class="vm-control">📸 Screenshot</button>
+<iframe id="vmDisplay" src="http://localhost:6080/vnc.html?resize=scale&autoconnect=true" frameborder="0"></iframe>
+<iframe
+  id="vmDisplay"
+  src="http://localhost:6080/vnc.html?resize=scale&autoconnect=true"
+  frameborder="0"
+></iframe>
+<div id="snackbar">Action completed</div>
+<nav id="bottomNav">
+  <button onclick="switchPanel('start')">🚀 Start VM</button>
+  <button onclick="switchPanel('display')">🖥️ Display</button>
+  <button onclick="switchPanel('settings')">⚙️ Settings</button>
+</nav>
+<section id="startVM">
+  <h2>Start Virtual Machine</h2>
+
+  <label>ISO File:
+    <input type="file" id="startIso" accept=".iso" />
+  </label>
+
+  <label>Disk Image (.qcow2 or .img):
+    <input type="file" id="startDisk" accept=".qcow2,.img" />
+  </label>
+
+  <label>Memory (MB):
+    <input type="number" id="startMemory" value="4096" />
+  </label>
+
+  <label>CPU Cores:
+    <input type="number" id="startCPU" value="4" />
+  </label>
+
+  <button onclick="previewVM()">Preview Command</button>
+  <button onclick="loadVMDisplay()">Open VM Display</button>
+
+  <pre id="vmCommandPreview"></pre>
+</section>
+<iframe id="vmDisplay" src="" frameborder="0"></iframe>
+<section id="themeSwitcher">
+  <h2>Theme</h2>
+  <select id="themeSelect" onchange="applyTheme(this.value)">
+    <option value="system">System Default</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</section>
+<header id="hero">
+  <img src="fwvm-logo.svg" alt="FWVM Logo" />
+  <h1>FWVM</h1>
+  <p>Touch-native VM control. VNC-powered display. Built entirely on mobile.</p>
+  <a href="https://github.com/fayad/fwvm" class="btn">Download APK</a>
+</header>
+
+<section id="features">
+  <h2>Features</h2>
+  <ul>
+    <li>🚀 Start virtual machines with a tap</li>
+    <li>🖥️ Live VNC display embedded in the UI</li>
+    <li>📱 Optimized for tablets and foldables</li>
+    <li>🎨 Google-style UI with One UI polish</li>
+    <li>🌗 Theme switcher: Light, Dark, System</li>
+  </ul>
+</section>
+
+<section id="media">
+  <h2>Demo</h2>
+  <video controls src="fwvm-demo.mp4" width="100%"></video>
+  <p><a href="fwvm-screenshots.zip">Download Screenshots</a></p>
+</section>
+
+<footer>
+  <p>Made by Fayad • Mobile-first VM innovation</p>
+</footer>
+<button onclick="copyText(qemuCommand)">📋 Copy Command</button>
+<button onclick="shareText(qemuCommand)">🔗 Share Command</button>

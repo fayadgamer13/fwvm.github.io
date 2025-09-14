@@ -122,3 +122,254 @@
     document.getElementById("downloadStatus").textContent = "Debian ISO download started in a new tab.";
   }
 </script>
+<script>
+  function startVM() {
+    const isoFile = document.getElementById('startIso').files[0];
+    const diskFile = document.getElementById('startDisk').files[0];
+    const memory = document.getElementById('startMemory').value;
+    const cpu = document.getElementById('startCPU').value;
+
+    if (!isoFile || !diskFile) {
+      alert("Please select both ISO and disk image files.");
+      return;
+    }
+
+    const isoPath = isoFile.name;
+    const diskPath = diskFile.name;
+
+    const qemuCmd = `qemu-system-aarch64 \\
+  -m ${memory} \\
+  -smp ${cpu} \\
+  -cdrom ${isoPath} \\
+  -hda ${diskPath} \\
+  -boot d \\
+  -machine virt \\
+  -cpu cortex-a57 \\
+  -nographic`;
+
+    document.getElementById('vmCommandPreview').textContent = qemuCmd;
+
+    // Optional: Save to qemu.cmd or run via Termux
+    // You can integrate Termux:API to execute this if needed
+  }
+</script>
+<script>
+  let qemuCommand = "";
+
+  function previewVM() {
+    const isoFile = document.getElementById('startIso').files[0];
+    const diskFile = document.getElementById('startDisk').files[0];
+    const memory = document.getElementById('startMemory').value;
+    const cpu = document.getElementById('startCPU').value;
+
+    if (!isoFile || !diskFile) {
+      alert("Please select both ISO and disk image files.");
+      return;
+    }
+
+    const isoPath = `/storage/emulated/0/Download/${isoFile.name}`;
+    const diskPath = `/storage/emulated/0/Download/${diskFile.name}`;
+
+    qemuCommand = `qemu-system-aarch64 \\
+  -m ${memory} \\
+  -smp ${cpu} \\
+  -cdrom "${isoPath}" \\
+  -hda "${diskPath}" \\
+  -boot d \\
+  -machine virt \\
+  -cpu cortex-a57 \\
+  -nographic`;
+
+    document.getElementById('vmCommandPreview').textContent = qemuCommand;
+  }
+
+  function runInTermux() {
+    if (!qemuCommand) {
+      alert("Preview the command first.");
+      return;
+    }
+
+    const encodedCmd = encodeURIComponent(qemuCommand);
+    const termuxURL = `termux://com.termux.execute?command=${encodedCmd}`;
+    window.location.href = termuxURL;
+  }
+</script>
+<script>
+  let vmPaused = false;
+
+  function togglePause() {
+    vmPaused = !vmPaused;
+    document.getElementById('pauseBtn').textContent = vmPaused ? '▶️ Resume' : '⏸️ Pause';
+    // Optional: Send pause/resume signal to QEMU via Termux or shell
+  }
+
+  function toggleKeyboard() {
+    const panel = document.getElementById('keyboardPanel');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  }
+
+  // Optional: Mouse control logic
+  document.getElementById('vmMouse').addEventListener('click', () => {
+    alert("Mouse control activated (placeholder)");
+    // You can later add touch-to-move or VNC pointer logic here
+  });
+</script>
+<script>
+  let vmPaused = false;
+
+  function togglePause() {
+    vmPaused = !vmPaused;
+    document.getElementById('pauseBtn').textContent = vmPaused ? '▶️ Resume' : '⏸️ Pause';
+    // Optional: Send pause/resume signal to QEMU via Termux or shell
+  }
+
+  function toggleKeyboard() {
+    const panel = document.getElementById('keyboardPanel');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  }
+
+  // 🖱️ Drag Mouse Control
+  const vmMouse = document.getElementById('vmMouse');
+  vmMouse.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData("text/plain", null);
+  });
+
+  document.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const x = e.clientX;
+    const y = e.clientY;
+    vmMouse.style.position = 'fixed';
+    vmMouse.style.left = `${x}px`;
+    vmMouse.style.top = `${y}px`;
+  });
+</script>
+<script>
+  function startVMDisplay() {
+    // Example: connect to local VNC server
+    document.getElementById('vmDisplay').src = "http://localhost:6080/vnc.html?host=localhost&port=5901";
+  }
+
+  // Call this after VM starts
+  startVMDisplay();
+</script>
+<script>
+  let vmPaused = false;
+
+  function togglePause() {
+    vmPaused = !vmPaused;
+    document.getElementById('pauseBtn').textContent = vmPaused ? '▶️ Resume' : '⏸️ Pause';
+    // Optional: Send pause/resume signal to QEMU via Termux or shell
+  }
+
+  function toggleKeyboard() {
+    const panel = document.getElementById('keyboardPanel');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  }
+
+  // 🖱️ Drag Mouse Control
+  const vmMouse = document.getElementById('vmMouse');
+  vmMouse.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData("text/plain", null);
+  });
+
+  document.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const x = e.clientX;
+    const y = e.clientY;
+    vmMouse.style.position = 'fixed';
+    vmMouse.style.left = `${x}px`;
+    vmMouse.style.top = `${y}px`;
+  });
+</script>
+function toggleFullscreen() {
+  const iframe = document.getElementById('vmDisplay');
+  if (iframe.requestFullscreen) {
+    iframe.requestFullscreen();
+  } else if (iframe.webkitRequestFullscreen) {
+    iframe.webkitRequestFullscreen();
+  } else if (iframe.msRequestFullscreen) {
+    iframe.msRequestFullscreen();
+  }
+}
+function captureVM() {
+  const canvas = document.getElementById('vmCanvas');
+  const imgData = canvas.toDataURL("image/png");
+  // You can open it in a new tab or save it
+  window.open(imgData);
+}
+function startVM() {
+  // Your QEMU launch logic here...
+
+  // Then auto-load the VNC viewer
+  document.getElementById('vmDisplay').src = "http://localhost:6080/vnc.html?resize=scale&autoconnect=true";
+}
+function showSnackbar(message) {
+  const bar = document.getElementById("snackbar");
+  bar.textContent = message;
+  bar.className = "show";
+  setTimeout(() => bar.className = bar.className.replace("show", ""), 3000);
+}
+showSnackbar("VM started successfully");
+let qemuCommand = "";
+
+function previewVM() {
+  const iso = document.getElementById('startIso').files[0];
+  const disk = document.getElementById('startDisk').files[0];
+  const memory = document.getElementById('startMemory').value;
+  const cpu = document.getElementById('startCPU').value;
+
+  if (!iso || !disk) {
+    alert("Please select both ISO and disk image.");
+    return;
+  }
+
+  const isoPath = `/storage/emulated/0/Download/${iso.name}`;
+  const diskPath = `/storage/emulated/0/Download/${disk.name}`;
+
+  qemuCommand = `qemu-system-aarch64 \\
+  -m ${memory} \\
+  -smp ${cpu} \\
+  -cdrom "${isoPath}" \\
+  -hda "${diskPath}" \\
+  -boot d \\
+  -machine virt \\
+  -cpu cortex-a57 \\
+  -vnc :1 \\
+  -device virtio-keyboard-device \\
+  -device virtio-mouse-device`;
+
+  document.getElementById('vmCommandPreview').textContent = qemuCommand;
+}
+
+function loadVMDisplay() {
+  document.getElementById('vmDisplay').src = "http://localhost:6080/vnc.html?resize=scale&autoconnect=true";
+}
+function applyTheme(mode) {
+  if (mode === "system") {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
+  } else {
+    document.documentElement.setAttribute("data-theme", mode);
+  }
+  localStorage.setItem("fwvm-theme", mode);
+}
+
+// Load saved theme on startup
+window.addEventListener("DOMContentLoaded", () => {
+  const saved = localStorage.getItem("fwvm-theme") || "system";
+  document.getElementById("themeSelect").value = saved;
+  applyTheme(saved);
+});
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showSnackbar("Copied to clipboard");
+  });
+}
+
+function shareText(text) {
+  if (navigator.share) {
+    navigator.share({ text });
+  } else {
+    copyText(text);
+  }
+}
